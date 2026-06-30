@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Websocket demo</title>
+	<style>
+		.connected {background-color: #dfd;}
+		.connected .if-not-connected {display: none;}
+		body:not(.connected) .if-connected {display: none;}
+	</style>
+	<script src="https://mint.gymburgdorf.ch/dev/demo/ws_demo_marius/WS.js" type="module"></script>
+</head>
+<body id="app">
+<h1>Websocket Demo</h1>
+<div>
+	<input id="groupInput" placeholder="group">
+	<input id="userInput" placeholder="user">
+	<div class="if-not-connected">
+		<button id="connectButton">Connect</button>
+	</div>
+	<div class="if-connected">
+		<div class="userlist"></div>
+		<input class="message">
+		<button class="sendToAll">send to all</button>
+	</div>
+
+</div>
+<div class="log"></div>
+<script type="module">
+
+	let groupName = localStorage.getItem("groupName") || "groupName"
+	groupInput.value = groupName
+	groupInput.addEventListener("input", (e)=> {
+		groupName = e.target.value
+		localStorage.setItem("groupName", groupName)
+	})
+
+	let userName = localStorage.getItem("userName") || Date.now().toString(32).slice(-8)
+	userInput.value = userName
+	userInput.addEventListener("input", (e)=> {
+		userName = e.target.value
+		localStorage.setItem("userName", userName)
+	})
+
+	let ws = null
+
+	async function connect() {
+		ws = await WS.connect(groupName, userName);
+		app.classList.add("connected")
+		ws.onMessage((msg) => log(JSON.stringify(msg)));
+		ws.onUserStatus(showUsers);
+		ws.getUsers();
+	}
+
+	connectButton.addEventListener("click", connect)
+
+	function showUsers(userlist) {
+		document.querySelector('.userlist').innerHTML = userlist
+			.map((u) => `<span>${JSON.stringify(u)}</span>`)
+			.join('');
+	}
+
+	function log(m) {
+		const l = document.querySelector('.log');
+		l.insertAdjacentHTML('beforeEnd', `<div>${m}</div>`);
+	}
+
+	document.querySelector('.sendToAll').addEventListener('click', () => {
+		ws.sendToAll(document.querySelector('.message').value);
+	});
+</script>
+
+</body></html>
