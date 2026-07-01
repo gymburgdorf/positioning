@@ -33,8 +33,10 @@
 
             function showData(data) {
                 console.log(data);
-                let posX = (data.coords.latitude - zeroX) / wX * 300
-                let posY = (data.coords.longitude - zeroY) / wY * 200
+                let x = zeroX // data.coords.latitude
+                let y = zeroY // data.coords.longitude
+                let posX = (x - zeroX) / wX * 300
+                let posY = (y - zeroY) / wY * 200
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
                 console.log(posX, posY)
@@ -42,9 +44,6 @@
                 circle.setAttribute("cx", posX);
                 circle.setAttribute("cy", posY);
             }
-
-            
-
 
             registerLocationHandler(showData);
         </script>
