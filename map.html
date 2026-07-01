@@ -19,10 +19,31 @@
         <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
             <image x="0" y="0" height="200" width="300" href="Burgdorf.png" />
         </svg>
-        
-        <script>
+
+        <script type="module">
+            const zeroX = 47.052979
+            const zeroY = 7.610414
+            const maxX = 47.060891
+            const maxY = 7.633105
+            const wX = maxX - zeroX
+            const wY = maxY - zeroY
+
+            import { registerLocationHandler } from "./getLocation.js";
+
+            function showData(data) {
+                console.log(data);
+                posX = (data.cords.latitude - zeroX) / wX * 300
+                posY = (data.cords.longitude - zeroY) / wY * 200
+                console.log(data.coords.latitude);
+                console.log(data.coords.longitude);
+                console.log(posX, posY)
+
+            }
+
+            
 
 
+            registerLocationHandler(showData);
         </script>
     </body>
 </html>
