@@ -17,6 +17,7 @@
         <br>
         <div>Alt: <span id="altitude"></span></div>
         <br>
+        <div>Speed: <span id="speed"></span> m/s</div>
         <div>Speed: <span id="speedkmh" ></span> km/h</div>
         <br>
         <div>Heading: <span id="heading"></span></div>
@@ -26,6 +27,7 @@
 
             function showData(data) {
                 console.log(data);
+                document.getElementById("speed").textContent = data.coords.speed;
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
                 document.getElementById("altitude").textContent = data.coords.altitude;
