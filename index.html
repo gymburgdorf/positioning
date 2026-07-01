@@ -17,8 +17,8 @@
         <br>
         <div>Alt: <span id="altitude"></span></div>
         <br>
-        <div>Speed: <span id="speed"></span></div>
-        <br
+        <div>Speed: <span id="speedkmh" ></span></div>
+        <br>
         <div>Heading: <span id="heading"></span></div>
 
         <script type="module">
@@ -31,6 +31,9 @@
                 document.getElementById("altitude").textContent = data.coords.altitude;
                 document.getElementById("speed").textContent = data.coords.speed;
                 document.getElementById("heading").textContent = data.coords.heading;
+
+                speedkmh = data.coords.speed * 3.6
+                document.getElementById("speedkmh").textContent = speedkmh
             }
 
             registerLocationHandler(showData);
