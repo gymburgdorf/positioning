@@ -29,10 +29,9 @@
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
                 document.getElementById("altitude").textContent = data.coords.altitude;
-                document.getElementById("speed").textContent = data.coords.speed;
                 document.getElementById("heading").textContent = data.coords.heading;
 
-                speedkmh = data.coords.speed * 3.6
+                const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
                 document.getElementById("speedkmh").textContent = speedkmh
             }
 
