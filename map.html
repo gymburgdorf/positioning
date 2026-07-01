@@ -26,9 +26,9 @@
 
         <script type="module">
             const minLat = 47.052979
-            const maxLat = 47.061109
+            const maxLat = 47.0612
             const minLon = 7.610414
-            const maxLon = 7.633523
+            const maxLon = 7.633424
             const wLat = maxLat - minLat
             const wLon = maxLon - minLon
             const h = 152.34375
@@ -46,8 +46,8 @@
             }
 
             function showData(data) {
-                const lon = data.coords.longitude
-                const lat = data.coords.latitude
+                const lon = 7.610816 //data.coords.longitude 
+                const lat = 47.053302 //data.coords.latitude
                 const posX = ((lon - minLon) / wLon) * 300
                 const posY = h - ((lat - minLat) / wLat) * h
 
