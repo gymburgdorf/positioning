@@ -29,11 +29,11 @@
                 console.log(data);
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
-                document.getElementById("altitude").textContent = Math.round(data.coords.altitude);
+                document.getElementById("altitude").textContent = Math.round(data.coords.altitude * 100) / 100;
                 document.getElementById("heading").textContent = data.coords.heading;
-                document.getElementById("speed").textContent = Math.round(data.coords.speed);
+                document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
-                document.getElementById("speedkmh").textContent = Math.round(speedkmh);
+                document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
             }
 
             registerLocationHandler(showData);
