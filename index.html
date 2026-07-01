@@ -10,45 +10,14 @@
         <div id="result"> </div>
         <div id="constant"> </div>
 
-        <script>
-            navigator.geolocation.getCurrentPosition(
-                (position) => {             
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    console.log("Standort:", lat, lon);
-                    document.getElementById("result").textContent = (String(lat) + String(lon))
-                
-                     
-                },
-                (error) => {
-    
-                if (error.code === error.PERMISSION_DENIED) {
-                    console.log("Nutzer hat den Standort blockiert");
-                }
-                }
-            );  
+        <script type="module">
+            import { registerLocationHandler } from "./getLocation.js";
 
-            function onSuccess(data) {
+            function showData(data) {
                 document.getElementById("constant").textContent = JSON.stringify(data)
             }
 
-            function onFail() {
-
-            }
-
-            const options = {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            };
-            
-            // Watch position (continuous)
-            const watchId = navigator.geolocation.watchPosition(onSuccess, onFail, options)
-
-
-            // Reload page every 10 seconds
-            setInterval(function(){ location.reload(); }, 10000);
-
+            registerLocationHandler(showData);
         </script>
     </body>
 </html>
