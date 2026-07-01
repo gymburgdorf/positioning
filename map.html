@@ -35,10 +35,14 @@
 
             import { registerLocationHandler } from "./getLocation.js";
 
-            const REMOTE_IMAGE_URL = "https://i.ytimg.com/vi/kClwJxgmrgk/maxresdefault.jpg";
+            const REMOTE_IMAGE_URLS = [
+                "https://i.ytimg.com/vi/kClwJxgmrgk/maxresdefault.jpg",
+                "https://media1.tenor.com/m/38rXeANdtGUAAAAd/big-yahu.gif"
+            ];
             const mapImage = document.getElementById("mapImage");
-            if (mapImage && Math.random() < 0.1) {
-                mapImage.setAttribute("href", REMOTE_IMAGE_URL);
+            if (mapImage && Math.random() < 0.05) {
+                const randomIndex = Math.floor(Math.random() * REMOTE_IMAGE_URLS.length);
+                mapImage.setAttribute("href", REMOTE_IMAGE_URLS[randomIndex]);
             }
 
             function showData(data) {
