@@ -27,9 +27,10 @@
 
             function showData(data) {
                 console.log(data);
+
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
-                document.getElementById("altitude").textContent = Math.round(data.coords.altitude * 100) / 100;
+                document.getElementById("altitude").textContent = Math.round(data.coords.altitude * 10000) / 10000;
                 document.getElementById("heading").textContent = data.coords.heading;
                 document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
