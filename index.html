@@ -9,11 +9,15 @@
         Created by: Kaspar, Marius, Nils, Jael
         <div id="result"> </div>
         <div id="constant"> </div>
+        <div>Lat: <span id="latitude">
+            
+        </span></div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
             function showData(data) {
+                console.log(data);
                 document.getElementById("constant").textContent = JSON.stringify(data)
             }
 
