@@ -18,8 +18,11 @@
     <body>
         <svg viewBox="0 0 300 152" xmlns="http://www.w3.org/2000/svg">
             <image x="0" y="0" height="152" width="300" href="Burgdorf.png" />
-            <circle id = "pos" cx = 150 cy = 100 r = 2.5 fill = red></circle>
+            <circle id = "pos" cx = 150 cy = 10 r = 2.5 fill = red></circle>
         </svg>
+        <div id="log">
+            
+        </div>
 
         <script type="module">
             const zeroX = 47.052979
@@ -44,6 +47,7 @@
                 let circle = document.getElementById("pos");
                 circle.setAttribute("cx", posX);
                 circle.setAttribute("cy", h - posY);
+                document.getElementById("log").textContent=`x: ${posX}, y:${posY}`
             }
 
             registerLocationHandler(showData);
