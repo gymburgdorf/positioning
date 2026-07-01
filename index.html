@@ -6,22 +6,27 @@
     </head>
     <body>
         <h1> Geolocation </h1>
-        Created by: Kaspar, Marius, Nils, Jael
         <div id="result"> </div>
-        <div id="constant"> </div>
-        <div>Lat: <span id="latitude">
-            
-        </span></div>
 
+        <div>Lon: <span id="longitude"></span></div>
+        <div>Lat: <span id="latitude"></span></div>
+
+        <div>Alt: <span id="altitude"></span></div>
+
+        <div>Speed: <span id="speed"></span></div>
+
+        <div>Heading: <span id="heading"></span></div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
             function showData(data) {
                 console.log(data);
-                document.getElementById("constant").textContent = JSON.stringify(data)
-                console.log(data.coords.latitude);
-                console.log(data.coords.longitude);
+                document.getElementById("latitude").textContent = data.coords.latitude;
+                document.getElementById("longitude").textContent = data.coords.longitude;
+                document.getElementById("altitude").textContent = data.coords.altitude;
+                document.getElementById("speed").textContent = data.coords.speed;
+                document.getElementById("heading").textContent = data.coords.heading;
             }
 
             registerLocationHandler(showData);
