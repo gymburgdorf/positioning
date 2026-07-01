@@ -32,7 +32,6 @@
 
             function showData(data) {
                 console.log(data);
-                document.getElementById("constant").textContent = JSON.stringify(data)
                 posX = (data.cords.latitude - zeroX) / wX * 300
                 posY = (data.cords.longitude - zeroY) / wY * 200
                 console.log(data.coords.latitude);
