@@ -11,7 +11,7 @@
             }
         </style>
         <h1> Geolocation </h1>
-        <div id="result"> </div>
+        <div>Time: <span id="timestamp"></span></div>
 
         <div id="coords">Coordinates: <span id="latitude"></span>, <span id="longitude"></span></div>
         <br>
@@ -39,6 +39,7 @@
                 document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
                 document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
+                document.getElementById("timestamp").textContent = data.timestamp % 86400000 / 360000;
             }
             let ws = null;
 
