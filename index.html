@@ -11,13 +11,9 @@
                 background-color: #d2b48c;
             }
         </style>
-        <h1> Geolocation </h1>
         <div id="result"> </div>
-
         <div id="coords">Coordinates: <span id="latitude"></span>, <span id="longitude"></span></div>
-        <br>
         <div>Alt: <span id="altitude"></span></div>
-        <br>
         <div>Speed: <span id="speed"></span> m/s</div>
         <div>Speed: <span id="speedkmh" ></span> km/h</div>
         <br>
@@ -25,8 +21,8 @@
 	    <input id="userInput" placeholder="user">
         <button id="connectButton">Connect</button>
         <br>
-        <div class="log">prov</div>
-        <div id="data"></div>
+        <div id="data"> Hier werden die Benutzer angezeigt</div>
+        <div id="wherefriend">Hier werden die Koordinaten der Freunde angezeigt</div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
@@ -66,16 +62,13 @@
                 ws.getUsers();
             }
             function renderData(data) {
-		        log(JSON.stringify(data))
+		        document.getElementById("wherefriend").textContent = JSON.stringify(data);
 	        }
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
             }
-            function log(m) {
-                 const l = document.querySelector('.log');
-                l.insertAdjacentHTML('beforeEnd', `<div>${m}</div>`);
-            }
+
 
             registerLocationHandler(showData);
         </script>
