@@ -37,15 +37,15 @@
 
             function showData(data) {
                 console.log(data);
-                let x = data.coords.latitude
-                let y = data.coords.longitude
+                let x = data.coords.longitude
+                let y = data.coords.latitude
                 let posX = (x - zeroX) / wX * 300
                 let posY = (y - zeroY) / wY * h
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
                 console.log(posX, posY)
                 let circle = document.getElementById("pos");
-                circle.setAttribute("cx", posX - 30);
+                circle.setAttribute("cx", posX;
                 circle.setAttribute("cy", h - posY);
                 document.getElementById("log").textContent=`V3 x: ${posX}, y:${posY}`
             }
