@@ -27,13 +27,14 @@
 
             function showData(data) {
                 console.log(data);
+
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
-                document.getElementById("altitude").textContent = toFixed(data.coords.altitude, 2);
+                document.getElementById("altitude").textContent = data.coords.altitude.toFixed(2);
                 document.getElementById("heading").textContent = data.coords.heading;
-                document.getElementById("speed").textContent = toFixed(data.coords.speed, 2);
+                document.getElementById("speed").textContent = data.coords.speed.toFixed(2);
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
-                document.getElementById("speedkmh").textContent = toFixed(speedkmh, 2);
+                document.getElementById("speedkmh").textContent = speedkmh.toFixed(2);
             }
 
             registerLocationHandler(showData);
