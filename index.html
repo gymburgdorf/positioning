@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title> Geo Location </title>
+        <script src="https://mint.gymburgdorf.ch/dev/demo/ws_demo_marius/WS.js" type="module"></script>
     </head>
-    <body>
+    <body id="app">
         <style>
             body {
                 background-color: #d2b48c;
@@ -25,10 +26,11 @@
         <button id="connectButton">Connect</button>
         <br>
         <div class="log">prov</div>
-        <div class="data"></div>
+        <div id="data"></div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
+            let ws = null;
 
             function showData(data) {
                 console.log(data);
@@ -39,8 +41,12 @@
                 document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
                 document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
+
+                if (ws) {
+                    ws.sendToAll(data.coords.latitude + "," + data.coords.longitude);
+                }
             }
-            let ws = null;
+            
 
             let groupName = "provgroup";
             groupInput.value = groupName
@@ -65,6 +71,10 @@
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
+            }
+            function log(m) {
+                 const l = document.querySelector('.log');
+                l.insertAdjacentHTML('beforeEnd', `<div>${m}</div>`);
             }
 
             registerLocationHandler(showData);
