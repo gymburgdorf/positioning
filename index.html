@@ -14,6 +14,12 @@
 
         <div>Lng: <span id="longitude"></span></div>
 
+        <div>Alt: <span id="altitude"></span></div>
+
+        <div>Speed: <span id="speed"></span></div>
+
+        <div>Heading: <span id="heading"></span></div>
+
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
@@ -24,6 +30,9 @@
                 console.log(data.coords.longitude);
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
+                document.getElementById("altitude").textContent = data.coords.altitude;
+                document.getElementById("speed").textContent = data.coords.speed;
+                document.getElementById("heading").textContent = data.coords.heading;
             }
 
             registerLocationHandler(showData);
