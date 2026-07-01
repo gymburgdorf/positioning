@@ -20,12 +20,7 @@
         <div>Speed: <span id="speed"></span> m/s</div>
         <div>Speed: <span id="speedkmh" ></span> km/h</div>
         <br>
-	    <input id="groupInput" placeholder="group">
-	    <input id="userInput" placeholder="user">
-        <button id="connectButton">Connect</button>
-        <br>
-        <div class="log">prov</div>
-        <div class="data"></div>
+        <div>Heading: <span id="heading"></span></div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
@@ -36,35 +31,10 @@
                 document.getElementById("latitude").textContent = data.coords.latitude;
                 document.getElementById("longitude").textContent = data.coords.longitude;
                 document.getElementById("altitude").textContent = Math.round(data.coords.altitude * 10000) / 10000;
+                document.getElementById("heading").textContent = data.coords.heading;
                 document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
                 document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
-            }
-            let ws = null;
-
-            let groupName = "provgroup";
-            groupInput.value = groupName
-	        groupInput.addEventListener("input", (event)=> {
-		        groupName = event.target.value
-	        })
-            let userName = "provuser";
-            userInput.value = userName
-            userInput.addEventListener("input", (event)=> {
-		        userName = event.target.value
-	        })
-            async function connect() {
-                ws = await WS.connect(groupName, userName);
-                app.classList.add("connected")
-                ws.onMessage(renderData);
-                ws.onUserStatus(showUsers);
-                ws.getUsers();
-            }
-            function renderData(data) {
-		        log(JSON.stringify(data))
-	        }
-            connectButton.addEventListener("click", connect)
-            function showUsers(userlist) {
-                document.getElementById("data").textContent = JSON.stringify(userlist);
             }
 
             registerLocationHandler(showData);
