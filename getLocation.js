@@ -5,6 +5,9 @@ const options = {
     maximumAge: 1000
 };
 
+function onFail(err) {
+    console.error(err)
+}
 
 export function registerLocationHandler(fn) {
     const watchId = navigator.geolocation.watchPosition(fn, onFail, options)
