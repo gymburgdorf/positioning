@@ -25,10 +25,10 @@
         </div>
 
         <script type="module">
-            const zeroX = 47.052979
-            const zeroY = 7.610414
-            const maxX = 47.061109
-            const maxY = 7.633523
+            const zeroY = 47.052979
+            const zeroX = 7.610414
+            const maxY = 47.061109
+            const maxX = 7.633523
             const wX = maxX - zeroX
             const wY = maxY - zeroY
             const h = 152
@@ -47,7 +47,7 @@
                 let circle = document.getElementById("pos");
                 circle.setAttribute("cx", posX);
                 circle.setAttribute("cy", h - posY);
-                document.getElementById("log").textContent=`V4 x: ${posX}, y:${posY}`
+                document.getElementById("log").textContent=`V4.1 x: ${posX}, y:${posY}`
             }
 
             registerLocationHandler(showData);
