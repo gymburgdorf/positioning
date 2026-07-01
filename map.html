@@ -25,12 +25,12 @@
         </div>
 
         <script type="module">
-            const zeroX = 47.052979
-            const zeroY = 7.610414
-            const maxX = 47.061109
-            const maxY = 7.633523
-            const wX = maxX - zeroX
-            const wY = maxY - zeroY
+            const minLat = 47.052979
+            const maxLat = 47.061109
+            const minLon = 7.610414
+            const maxLon = 7.633523
+            const wLat = maxLat - minLat
+            const wLon = maxLon - minLon
             const h = 152.34375
 
             import { registerLocationHandler } from "./getLocation.js";
@@ -46,17 +46,18 @@
             }
 
             function showData(data) {
-                let x = data.coords.longitude
-                let y = data.coords.latitude
-                let posX = (x - zeroX) / wX * 300
-                let posY = (y - zeroY) / wY * h
+                const lon = data.coords.longitude
+                const lat = data.coords.latitude
+                const posX = ((lon - minLon) / wLon) * 300
+                const posY = h - ((lat - minLat) / wLat) * h
+
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
                 console.log(posX, posY)
-                let circle = document.getElementById("pos");
+                const circle = document.getElementById("pos");
                 circle.setAttribute("cx", posX);
-                circle.setAttribute("cy", h - posY);
-                document.getElementById("log").textContent=`x: ${posX}, y:${posY}`
+                circle.setAttribute("cy", posY);
+                document.getElementById("log").textContent = `x: ${posX}, y:${posY}`
             }
 
             registerLocationHandler(showData);
