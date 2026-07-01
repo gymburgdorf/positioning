@@ -7,7 +7,10 @@ const options = {
 
 function onFail(err) {
     console.error(err)
+    alert("Error getting location: " + err.message)
 }
+
+
 
 export function registerLocationHandler(fn) {
     const watchId = navigator.geolocation.watchPosition(fn, onFail, options)
