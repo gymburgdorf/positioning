@@ -17,7 +17,7 @@
     </head>
     <body>
         <svg viewBox="0 0 300 152.34375" xmlns="http://www.w3.org/2000/svg">
-            <image x="0" y="0" height="152.34375" width="300" href="Burgdorf.png" />
+            <image id="mapImage" x="0" y="0" height="152.34375" width="300" href="Burgdorf.png" />
             <circle id = "pos" cx = 1500 cy = 1000 r = 2.5 fill = red></circle>
         </svg>
         <div id="log">
@@ -35,8 +35,13 @@
 
             import { registerLocationHandler } from "./getLocation.js";
 
+            const REMOTE_IMAGE_URL = "https://i.ytimg.com/vi/kClwJxgmrgk/maxresdefault.jpg";
+            const mapImage = document.getElementById("mapImage");
+            if (mapImage && Math.random() < 0.1) {
+                mapImage.setAttribute("href", REMOTE_IMAGE_URL);
+            }
+
             function showData(data) {
-                console.log(data);
                 let x = data.coords.longitude
                 let y = data.coords.latitude
                 let posX = (x - zeroX) / wX * 300
