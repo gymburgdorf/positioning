@@ -16,8 +16,8 @@
         </style>
     </head>
     <body>
-        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-            <image x="0" y="0" height="200" width="300" href="Burgdorf.png" />
+        <svg viewBox="0 0 300 152" xmlns="http://www.w3.org/2000/svg">
+            <image x="0" y="0" height="152" width="300" href="Burgdorf.png" />
             <circle id = "pos" cx = 150 cy = 100 r = 2.5 fill = red></circle>
         </svg>
 
@@ -28,21 +28,22 @@
             const maxY = 7.633105
             const wX = maxX - zeroX
             const wY = maxY - zeroY
+            const h = 152
 
             import { registerLocationHandler } from "./getLocation.js";
 
             function showData(data) {
                 console.log(data);
-                let x = zeroX // data.coords.latitude
-                let y = zeroY // data.coords.longitude
+                let x = data.coords.latitude
+                let y = data.coords.longitude
                 let posX = (x - zeroX) / wX * 300
-                let posY = (y - zeroY) / wY * 200
+                let posY = (y - zeroY) / wY * h
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
                 console.log(posX, posY)
                 let circle = document.getElementById("pos");
                 circle.setAttribute("cx", posX);
-                circle.setAttribute("cy", posY);
+                circle.setAttribute("cy", h - posY);
             }
 
             registerLocationHandler(showData);
