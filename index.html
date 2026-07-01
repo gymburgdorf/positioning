@@ -10,11 +10,15 @@
         <div id="result"> </div>
         <div id="constant"> </div>
 
+
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
             function showData(data) {
+                console.log(data);
                 document.getElementById("constant").textContent = JSON.stringify(data)
+                console.log(data.coords.latitude);
+                console.log(data.coords.longitude);
             }
 
             registerLocationHandler(showData);
