@@ -11,7 +11,9 @@
                 background-color: #d2b48c;
             }
         </style>
-        <div id="result"> </div>
+        <h1> Geolocation </h1>
+        <div>Time: <span id="timestamp"></span></div>
+
         <div id="coords">Coordinates: <span id="latitude"></span>, <span id="longitude"></span></div>
         <div>Alt: <span id="altitude"></span></div>
         <div>Speed: <span id="speed"></span> m/s</div>
@@ -37,6 +39,10 @@
                 document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
                 const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
                 document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
+                let time = (data.timestamp % 86400000) / 3600000 + 2
+                let hours = Math.floor(time)
+                let minutes = (time % 1)*60
+                document.getElementById("timestamp").textContent = hours + ":" + Math.floor(minutes);
 
                 if (ws) {
                     ws.sendToAll(JSON.stringify({ user: userName, lat: data.coords.latitude, lng: data.coords.longitude }));
