@@ -67,8 +67,12 @@
                 ws.getUsers();
             }
             function renderData(friendData) {
-                console.log(friendData);
-                let { user, lat, lng } = friendData.data;
+                console.log("string friendData:", friendData.data);
+                const fdataobject = JSON.parse(friendData.data);
+                console.log("object:", fdataobject);
+                const user = fdataobject.user;
+                const lat = fdataobject.lat;
+                const lng = fdataobject.lng;
                 let target = document.getElementById("wherefriend")
                 if (document.getElementById(user)) {
                     document.getElementById(user).textContent = `${user} - Lat: ${lat}, Lng: ${lng}`;
