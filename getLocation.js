@@ -17,11 +17,6 @@ export function registerLocationHandler(fn) {
 
 }
 
-let x1 = 7.6
-let x2 = 7.7
-let y1 = 47
-let y2 = 47.1
-
 export function getDisatnce(y1, x1,  y2, x2) {
     let dx = x2 - x1
     let dy = y2 - y1
