@@ -190,7 +190,7 @@
 
         <div id="plane" title="Zur SWISS-Website" onclick="window.open('https://www.swiss.com', '_blank')">✈️</div>
         <div class="track"></div>
-        <div id="train" title="Zur SBB-Website" onclick="window.open('https://www.youtube.com/shorts/gk-hSroRMNY', '_blank')">🚂</div>
+        <div id="train" title="Zur SBB-Website" onclick="window.open('https://www.sbb.ch', '_blank')">🚂</div>
         <div class="hint"></div>
 
         <script type="module">
@@ -269,9 +269,9 @@
             let planeActive = false;
             let lastFrameTime = performance.now();
 
-            // Flugzeug kommt selten und zufällig: im Schnitt ca. alle 40 Sekunden
+            // Flugzeug kommt zufällig: im Schnitt ca. alle 12 Sekunden
             function scheduleNextFlight() {
-                const delayMs = 25000 + Math.random() * 30000;
+                const delayMs = 6000 + Math.random() * 12000;
                 setTimeout(() => {
                     planeX = -150;
                     planeActive = true;
