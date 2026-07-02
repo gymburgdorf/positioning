@@ -293,7 +293,7 @@
                 train.style.transform = `translateX(${trainX}px) scaleX(-1)`;
 
                 if (planeActive) {
-                    const planePxPerSecond = 630;
+                    const planePxPerSecond = 100;
                     planeX += planePxPerSecond * dt;
                     if (planeX > window.innerWidth + 150) {
                         planeActive = false;
