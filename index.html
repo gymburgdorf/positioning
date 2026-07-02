@@ -13,7 +13,7 @@
         </style>
         <h1> Geolocation </h1>
         <div>Time: <span id="timestamp"></span></div>
-
+        <div>Place: <span id="place"></span></div>
         <div id="coords">Coordinates: <span id="latitude"></span>, <span id="longitude"></span></div>
         <div>Altitude: <span id="altitude"></span> m</div>
         <div>Speed: <span id="speed"></span> m/s</div>
@@ -43,6 +43,7 @@
                 let hours = Math.floor(time)
                 let minutes = (time % 1)*60
                 document.getElementById("timestamp").textContent = hours + ":" + Math.floor(minutes);
+                document.getElementById("place").textContent = data.place;
 
                 if (ws) {
                     ws.sendToAll(JSON.stringify({ user: userName, lat: data.coords.latitude, lng: data.coords.longitude }));
