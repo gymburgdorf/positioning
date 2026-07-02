@@ -68,9 +68,9 @@
             }
             function renderData(friendData) {
                 console.log(friendData);
-                let target = document.getElementById("wherefriend")
-                
-                target.insertAdjacentHTML('beforeEnd', `<div>${friendData.userName} - Lat: ${friendData.lat}, Lng: ${friendData.lng}</div>`);
+                let { userName, lat, lng } = friendData.data;
+                let target = document.getElementById("wherefriend") 
+                target.insertAdjacentHTML('beforeEnd', `<div>${userName} - Lat: ${lat}, Lng: ${lng}</div>`);
             }
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
