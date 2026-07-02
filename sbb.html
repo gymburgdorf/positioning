@@ -30,6 +30,16 @@
                 font-size: 15px;
                 color: #4b5563;
             }
+
+            #train {
+                position: fixed;
+                bottom: 20px;
+                left: 0;
+                font-size: 90px;
+                cursor: pointer;
+                user-select: none;
+                z-index: 10;
+            }
         </style>
     </head>
 
@@ -39,6 +49,8 @@
             <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
             <g id="speedTrail"></g>
         </svg>
+
+        <div id="train" title="Zur SBB" onclick="window.open('https://www.sbb.ch', '_blank')">🚂</div>
 
         <div id="speedwrap">
             <div>Speed: <span id="speedkmh"></span> km/h</div>
@@ -104,6 +116,27 @@
             }
 
             registerLocationHandler(showData);
+
+            const train = document.getElementById("train");
+            let trainX = -150;
+            let lastFrameTime = performance.now();
+
+            function moveTrain(now) {
+                const dt = (now - lastFrameTime) / 1000;
+                lastFrameTime = now;
+
+                const pxPerSecond = 30 + currentSpeedKmh * 5;
+                trainX += pxPerSecond * dt;
+
+                if (trainX > window.innerWidth + 150) {
+                    trainX = -150;
+                }
+
+                train.style.transform = `translateX(${trainX}px) scaleX(-1)`;
+                requestAnimationFrame(moveTrain);
+            }
+
+            requestAnimationFrame(moveTrain);
         </script>
     </body>
 </html>
