@@ -23,12 +23,17 @@ async function connect() {
     ws.getUsers();
 }
 function renderData(friendData) {
-    console.log(friendData);
-    let { userName, lat, lng } = JSON.parse(friendData.data);
+    console.log({friendData});
+    let { user, lat, lng } = JSON.parse(friendData.data);
     window.userPositions = window.userPositions || {};
-    window.userPositions[userName] = { lat, lng };
-    //let target = document.getElementById("wherefriend") 
-    //target.insertAdjacentHTML('beforeEnd', `<div>${userName} - Lat: ${lat}, Lng: ${lng}</div>`);
+    window.userPositions[user] = { lat, lng };
+    let target = document.getElementById("wherefriend")
+    let entry = document.getElementById("friend-" + user);
+    if (entry) {
+        entry.textContent = `${user} - Lat: ${lat}, Lng: ${lng}`;
+    } else {
+        target.insertAdjacentHTML('beforeEnd', `<div id="friend-${user}">${user} - Lat: ${lat}, Lng: ${lng}</div>`);
+    }
 }
 connectButton.addEventListener("click", connect)
 
