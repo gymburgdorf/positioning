@@ -24,7 +24,9 @@ async function connect() {
 }
 function renderData(friendData) {
     console.log(friendData);
-    let { userName, lat, lng } = friendData.data;
+    let { userName, lat, lng } = JSON.parse(friendData.data);
+    window.userPositions = window.userPositions || {};
+    window.userPositions[userName] = { lat, lng };
     //let target = document.getElementById("wherefriend") 
     //target.insertAdjacentHTML('beforeEnd', `<div>${userName} - Lat: ${lat}, Lng: ${lng}</div>`);
 }

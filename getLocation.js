@@ -7,7 +7,7 @@ const options = {
 
 function onFail(err) {
     console.error(err)
-    alert("Error getting location: " + err.message)
+    // alert("Error getting location: " + err.message)
 }
 
 
