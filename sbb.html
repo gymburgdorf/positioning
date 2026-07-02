@@ -14,15 +14,21 @@
             svg {
                 width: 100%;
                 max-width: 1200px;
-                height: auto;
+                height: 300px;
                 display: block;
                 margin: 0 auto;
             }
 
-            #speed {
+            #speedwrap {
                 margin-top: 12px;
                 text-align: center;
                 font-size: 18px;
+            }
+
+            #locationName {
+                margin-top: 4px;
+                font-size: 15px;
+                color: #4b5563;
             }
         </style>
     </head>
@@ -33,26 +39,39 @@
             <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
             <g id="speedTrail"></g>
         </svg>
-        
+
         <div id="speedwrap">
             <div>Speed: <span id="speedkmh"></span> km/h</div>
+            <div id="locationName">Locating city…</div>
         </div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
-
             const speedTrail = document.getElementById("speedTrail");
+            const locationName = document.getElementById("locationName");
             const svgWidth = 1200;
             const svgHeight = 300;
-            const stepPx = 2;
+            const stepPx = 1;
             let currentSpeedKmh = 0;
             let circleIndex = 0;
             let tickCount = 0;
 
+            async function lookupLocationName(lat, lon) {
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`);
+                    const data = await response.json();
+                    const address = data.address || {};
+                    const city = address.city || address.town || address.village || address.municipality || address.county || "Unknown place";
+                    locationName.textContent = city;
+                } catch (error) {
+                    locationName.textContent = "Location unavailable";
+                }
+            }
+
             function addSpeedCircle(speedKmh) {
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                const x = svgWidth - (circleIndex * stepPx);
+                const x = 40 + circleIndex * stepPx;
                 const y = Math.max(0, Math.min(svgHeight, svgHeight - speedKmh));
 
                 circle.setAttribute("cx", x);
@@ -68,7 +87,7 @@
                 tickCount += 1;
                 document.getElementById("speedkmh").textContent = currentSpeedKmh.toFixed(1);
 
-                if (tickCount % 2 === 0) {
+                if (tickCount % 1 === 0) {
                     addSpeedCircle(currentSpeedKmh);
                 }
             }, 1000);
@@ -77,9 +96,11 @@
                 const coords = data.coords || {};
                 const speedValue = coords.speed === null || coords.speed === undefined ? 0 : coords.speed * 3.6;
                 currentSpeedKmh = speedValue;
-                 document.getElementById("speedkmh").textContent = Math.round(data.coords.speed * 100) / 100;
-                const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
-                document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
+                document.getElementById("speedkmh").textContent = speedValue.toFixed(1);
+
+                if (coords.latitude !== undefined && coords.longitude !== undefined) {
+                    lookupLocationName(coords.latitude, coords.longitude);
+                }
             }
 
             registerLocationHandler(showData);
