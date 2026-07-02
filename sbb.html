@@ -1,49 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SBB Speed</title>
         <style>
+            * {
+                box-sizing: border-box;
+            }
+
             body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
+                font-family: "Segoe UI", Arial, sans-serif;
+                margin: 0;
+                min-height: 100vh;
+                background: linear-gradient(160deg, #f5f7fa 0%, #e4e9f0 100%);
+                color: #1f2937;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 24px 16px 140px;
+            }
+
+            header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .logo {
+                background: #eb0000;
+                color: #ffffff;
+                font-weight: 700;
+                font-size: 20px;
+                padding: 6px 14px;
+                border-radius: 6px;
+                letter-spacing: 1px;
             }
 
             h1 {
+                font-size: 26px;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .card {
+                background: #ffffff;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                padding: 24px;
+                width: 100%;
+                max-width: 720px;
+                margin-bottom: 20px;
+            }
+
+            .speed-card {
                 text-align: center;
+            }
+
+            #speedkmh {
+                font-size: 72px;
+                font-weight: 700;
+                color: #eb0000;
+                line-height: 1;
+            }
+
+            .unit {
+                font-size: 22px;
+                color: #6b7280;
+                margin-left: 6px;
+            }
+
+            #locationName {
+                margin-top: 12px;
+                font-size: 17px;
+                color: #4b5563;
+                display: none;
+            }
+
+            #locationName.visible {
+                display: block;
+            }
+
+            .chart-title {
+                font-size: 15px;
+                font-weight: 600;
+                color: #6b7280;
+                margin: 0 0 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
 
             svg {
                 width: 100%;
-                max-width: 1200px;
-                height: 300px;
+                height: auto;
                 display: block;
-                margin: 0 auto;
             }
 
-            #speedwrap {
-                margin-top: 12px;
+            #train {
+                position: fixed;
+                bottom: 24px;
+                left: 0;
+                font-size: 90px;
+                cursor: pointer;
+                user-select: none;
+                z-index: 10;
+                line-height: 1;
+                transition: filter 0.2s;
+            }
+
+            #train:hover {
+                filter: drop-shadow(0 0 12px rgba(235, 0, 0, 0.5));
+            }
+
+            .track {
+                position: fixed;
+                bottom: 18px;
+                left: 0;
+                width: 100%;
+                border-bottom: 4px solid #9ca3af;
+                z-index: 5;
+            }
+
+            .hint {
+                position: fixed;
+                bottom: 2px;
+                width: 100%;
                 text-align: center;
-                font-size: 18px;
+                font-size: 12px;
+                color: #9ca3af;
+                z-index: 5;
             }
 
-            #locationName {
-                margin-top: 4px;
-                font-size: 15px;
-                color: #4b5563;
+            @media (max-width: 500px) {
+                #speedkmh {
+                    font-size: 54px;
+                }
+
+                #train {
+                    font-size: 60px;
+                }
             }
         </style>
     </head>
 
     <body>
-        <h1> SBB Speed </h1>
-        <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
-            <g id="speedTrail"></g>
-        </svg>
+        <header>
+            <div class="logo">SBB</div>
+            <h1>Speed</h1>
+        </header>
 
-        <div id="speedwrap">
-            <div>Speed: <span id="speedkmh"></span> km/h</div>
-            <div id="locationName">Locating city…</div>
+        <div class="card speed-card">
+            <span id="speedkmh">–</span><span class="unit">km/h</span>
+            <div id="locationName"></div>
         </div>
+
+        <div class="card">
+            <p class="chart-title">Geschwindigkeitsverlauf</p>
+            <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
+                <line x1="0" y1="100" x2="1200" y2="100" stroke="#eeeeee" stroke-width="1"></line>
+                <line x1="0" y1="200" x2="1200" y2="200" stroke="#eeeeee" stroke-width="1"></line>
+                <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
+                <text x="8" y="95" font-size="14" fill="#9ca3af">200</text>
+                <text x="8" y="195" font-size="14" fill="#9ca3af">100</text>
+                <g id="speedTrail"></g>
+            </svg>
+        </div>
+
+        <div class="track"></div>
+        <div id="train" title="Zur SBB-Website" onclick="window.open('https://www.youtube.com/shorts/gk-hSroRMNY', '_blank')">🚂</div>
+        <div class="hint"></div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
@@ -54,18 +180,25 @@
             const svgHeight = 300;
             const stepPx = 1;
             let currentSpeedKmh = 0;
+            let hasData = false;
             let circleIndex = 0;
             let tickCount = 0;
 
             async function lookupLocationName(lat, lon) {
                 try {
                     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`);
+                    if (!response.ok) throw new Error("Request failed");
                     const data = await response.json();
                     const address = data.address || {};
-                    const city = address.city || address.town || address.village || address.municipality || address.county || "Unknown place";
-                    locationName.textContent = city;
+                    const city = address.city || address.town || address.village || address.municipality || address.county;
+                    if (city) {
+                        locationName.textContent = "📍 " + city;
+                        locationName.classList.add("visible");
+                    } else {
+                        locationName.classList.remove("visible");
+                    }
                 } catch (error) {
-                    locationName.textContent = "Location unavailable";
+                    locationName.classList.remove("visible");
                 }
             }
 
@@ -77,7 +210,7 @@
                 circle.setAttribute("cx", x);
                 circle.setAttribute("cy", y);
                 circle.setAttribute("r", 2.5);
-                circle.setAttribute("fill", "#2e86de");
+                circle.setAttribute("fill", "#eb0000");
 
                 speedTrail.appendChild(circle);
                 circleIndex += 1;
@@ -85,6 +218,7 @@
 
             setInterval(() => {
                 tickCount += 1;
+                if (!hasData) return;
                 document.getElementById("speedkmh").textContent = currentSpeedKmh.toFixed(1);
 
                 if (tickCount % 1 === 0) {
@@ -96,6 +230,7 @@
                 const coords = data.coords || {};
                 const speedValue = coords.speed === null || coords.speed === undefined ? 0 : coords.speed * 3.6;
                 currentSpeedKmh = speedValue;
+                hasData = true;
                 document.getElementById("speedkmh").textContent = speedValue.toFixed(1);
 
                 if (coords.latitude !== undefined && coords.longitude !== undefined) {
@@ -104,6 +239,27 @@
             }
 
             registerLocationHandler(showData);
+
+            const train = document.getElementById("train");
+            let trainX = -150;
+            let lastFrameTime = performance.now();
+
+            function moveTrain(now) {
+                const dt = (now - lastFrameTime) / 1000;
+                lastFrameTime = now;
+
+                const pxPerSecond = 30 + currentSpeedKmh * 5;
+                trainX += pxPerSecond * dt;
+
+                if (trainX > window.innerWidth + 150) {
+                    trainX = -150;
+                }
+
+                train.style.transform = `translateX(${trainX}px) scaleX(-1)`;
+                requestAnimationFrame(moveTrain);
+            }
+
+            requestAnimationFrame(moveTrain);
         </script>
     </body>
 </html>
