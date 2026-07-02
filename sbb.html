@@ -113,6 +113,23 @@
                 filter: drop-shadow(0 0 12px rgba(235, 0, 0, 0.5));
             }
 
+            #plane {
+                position: fixed;
+                top: 0;
+                left: 0;
+                visibility: hidden;
+                font-size: 70px;
+                cursor: pointer;
+                user-select: none;
+                z-index: 10;
+                line-height: 1;
+                transition: filter 0.2s;
+            }
+
+            #plane:hover {
+                filter: drop-shadow(0 0 12px rgba(235, 0, 0, 0.5));
+            }
+
             .track {
                 position: fixed;
                 bottom: 18px;
@@ -139,6 +156,10 @@
 
                 #train {
                     font-size: 60px;
+                }
+
+                #plane {
+                    font-size: 48px;
                 }
             }
         </style>
@@ -167,6 +188,7 @@
             </svg>
         </div>
 
+        <div id="plane" title="Zur SWISS-Website" onclick="window.open('https://www.swiss.com', '_blank')">✈️</div>
         <div class="track"></div>
         <div id="train" title="Zur SBB-Website" onclick="window.open('https://www.youtube.com/shorts/gk-hSroRMNY', '_blank')">🚂</div>
         <div class="hint"></div>
@@ -241,25 +263,59 @@
             registerLocationHandler(showData);
 
             const train = document.getElementById("train");
+            const plane = document.getElementById("plane");
             let trainX = -150;
+            let planeX = -150;
+            let planeActive = false;
             let lastFrameTime = performance.now();
 
-            function moveTrain(now) {
+            // Flugzeug kommt selten und zufällig: im Schnitt ca. alle 40 Sekunden
+            function scheduleNextFlight() {
+                const delayMs = 25000 + Math.random() * 30000;
+                setTimeout(() => {
+                    planeX = -150;
+                    planeActive = true;
+                    plane.style.visibility = "visible";
+                }, delayMs);
+            }
+
+            scheduleNextFlight();
+
+            function moveVehicles(now) {
                 const dt = (now - lastFrameTime) / 1000;
                 lastFrameTime = now;
 
-                const pxPerSecond = 30 + currentSpeedKmh * 5;
-                trainX += pxPerSecond * dt;
-
+                const trainPxPerSecond = 30 + currentSpeedKmh * 5;
+                trainX += trainPxPerSecond * dt;
                 if (trainX > window.innerWidth + 150) {
                     trainX = -150;
                 }
-
                 train.style.transform = `translateX(${trainX}px) scaleX(-1)`;
-                requestAnimationFrame(moveTrain);
+
+                if (planeActive) {
+                    const planePxPerSecond = 630;
+                    planeX += planePxPerSecond * dt;
+                    if (planeX > window.innerWidth + 150) {
+                        planeActive = false;
+                        plane.style.visibility = "hidden";
+                        scheduleNextFlight();
+                    }
+
+                    // Wellenkurve: y folgt einer Sinuskurve, der Winkel der Steigung
+                    const waveCenterY = 130;
+                    const waveAmplitude = 80;
+                    const waveK = (2 * Math.PI) / 700;
+                    const planeY = waveCenterY + waveAmplitude * Math.sin(waveK * planeX);
+                    const slope = waveAmplitude * waveK * Math.cos(waveK * planeX);
+                    // +45°, weil die Nase des Emojis nach Nordosten zeigt
+                    const angleDeg = Math.atan(slope) * (180 / Math.PI) + 45;
+                    plane.style.transform = `translate(${planeX}px, ${planeY}px) rotate(${angleDeg}deg)`;
+                }
+
+                requestAnimationFrame(moveVehicles);
             }
 
-            requestAnimationFrame(moveTrain);
+            requestAnimationFrame(moveVehicles);
         </script>
     </body>
 </html>
