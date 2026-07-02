@@ -31,18 +31,17 @@
         <h1> SBB Speed </h1>
         <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
-            <circle id="pos" cx="150" cy="10" r="2.5" fill="red"></circle>
             <g id="speedTrail"></g>
         </svg>
         
-        <div id="speed">
+        <div id="speedwrap">
             <div>Speed: <span id="speedkmh"></span> km/h</div>
         </div>
 
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
-            const speedkmh = document.getElementById("speedkmh");
+
             const speedTrail = document.getElementById("speedTrail");
             const svgWidth = 1200;
             const svgHeight = 300;
@@ -67,7 +66,7 @@
 
             setInterval(() => {
                 tickCount += 1;
-                speedkmh.textContent = currentSpeedKmh.toFixed(1);
+                document.getElementById("speedkmh").textContent = currentSpeedKmh.toFixed(1);
 
                 if (tickCount % 2 === 0) {
                     addSpeedCircle(currentSpeedKmh);
@@ -78,6 +77,9 @@
                 const coords = data.coords || {};
                 const speedValue = coords.speed === null || coords.speed === undefined ? 0 : coords.speed * 3.6;
                 currentSpeedKmh = speedValue;
+                 document.getElementById("speedkmh").textContent = Math.round(data.coords.speed * 100) / 100;
+                const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
+                document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
             }
 
             registerLocationHandler(showData);
