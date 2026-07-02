@@ -30,7 +30,10 @@ function renderData(friendData) {
 }
 connectButton.addEventListener("click", connect)
 
-function showUsers() {}
+function showUsers(users) {
+    console.log(users)
+    window.userlist = users
+}
 
 function sendData(data) {
                     

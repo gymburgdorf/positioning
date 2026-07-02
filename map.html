@@ -58,6 +58,10 @@
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
                 console.log(posX, posY)
+
+                for (user in window.parent.userlist) {
+                    console.log(userlist)
+                }
                 const circle = document.getElementById("pos");
                 circle.setAttribute("cx", posX);
                 circle.setAttribute("cy", posY);
