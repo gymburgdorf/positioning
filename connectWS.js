@@ -22,7 +22,7 @@ async function connect() {
     ws.onUserStatus(showUsers);
     ws.getUsers();
 }
-function renderData(friendData) {
+export function renderData(friendData) {
     console.log(friendData);
     let { userName, lat, lng } = JSON.parse(friendData.data);
     window.userPositions = window.userPositions || {};
