@@ -2,21 +2,27 @@
 <html>
     <head>
         <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+
             h1 {
                 text-align: center;
-                font-family: Arial, sans-serif;
             }
+
             svg {
                 width: 100%;
-                height: 100%;
-
+                max-width: 1200px;
+                height: auto;
+                display: block;
+                margin: 0 auto;
             }
 
-            .speed {
-                display: block;
-                width: 100%;
-                height: 100%;
-
+            #speed {
+                margin-top: 12px;
+                text-align: center;
+                font-size: 18px;
             }
         </style>
     </head>
@@ -24,7 +30,9 @@
     <body>
         <h1> SBB Speed </h1>
         <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
-            <circle id = "pos" cx = 150 cy = 10 r = 2.5 fill = red></circle>
+            <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
+            <circle id="pos" cx="150" cy="10" r="2.5" fill="red"></circle>
+            <g id="speedTrail"></g>
         </svg>
         
         <div id="speed">
@@ -32,28 +40,44 @@
         </div>
 
         <script type="module">
-            
             import { registerLocationHandler } from "./getLocation.js";
-            document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
-            const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;    
+
+            const speedkmh = document.getElementById("speedkmh");
+            const speedTrail = document.getElementById("speedTrail");
+            const svgWidth = 1200;
+            const svgHeight = 300;
+            const stepPx = 2;
+            let currentSpeedKmh = 0;
+            let circleIndex = 0;
+            let tickCount = 0;
+
+            function addSpeedCircle(speedKmh) {
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                const x = svgWidth - (circleIndex * stepPx);
+                const y = Math.max(0, Math.min(svgHeight, svgHeight - speedKmh));
+
+                circle.setAttribute("cx", x);
+                circle.setAttribute("cy", y);
+                circle.setAttribute("r", 2.5);
+                circle.setAttribute("fill", "#2e86de");
+
+                speedTrail.appendChild(circle);
+                circleIndex += 1;
+            }
+
+            setInterval(() => {
+                tickCount += 1;
+                speedkmh.textContent = currentSpeedKmh.toFixed(1);
+
+                if (tickCount % 2 === 0) {
+                    addSpeedCircle(currentSpeedKmh);
+                }
+            }, 1000);
 
             function showData(data) {
-                const lon = data.coords.longitude 
-                const lat = data.coords.latitude
-                const posX = ((lon - minLon) / wLon) * 300 - 4
-                const posY = h - ((lat - minLat) / wLat) * h + 1
-
-                console.log(data.coords.latitude);
-                console.log(data.coords.longitude);
-                console.log(posX, posY)
-
-                for (user in window.parent.userlist) {
-                    console.log(userlist)
-                }
-                const circle = document.getElementById("pos");
-                circle.setAttribute("cx", posX);
-                circle.setAttribute("cy", posY);
-                
+                const coords = data.coords || {};
+                const speedValue = coords.speed === null || coords.speed === undefined ? 0 : coords.speed * 3.6;
+                currentSpeedKmh = speedValue;
             }
 
             registerLocationHandler(showData);
