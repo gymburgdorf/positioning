@@ -74,7 +74,7 @@
 
             function renderOthers() {
                 if(!window.parent.userlist) return
-                 for (user in window.parent.userlist) {
+                 for (let user in window.parent.userlist) {
                     console.log({user})
                     let position = window.parent.userPositions[user.username]
                     console.log(position)
