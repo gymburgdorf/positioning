@@ -31,7 +31,6 @@
         <h1> SBB Speed </h1>
         <svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" y1="300" x2="1200" y2="300" stroke="#cccccc" stroke-width="1"></line>
-            <circle id="pos" cx="150" cy="10" r="2.5" fill="red"></circle>
             <g id="speedTrail"></g>
         </svg>
         
@@ -42,7 +41,9 @@
         <script type="module">
             import { registerLocationHandler } from "./getLocation.js";
 
-            const speedkmh = document.getElementById("speedkmh");
+            document.getElementById("speed").textContent = Math.round(data.coords.speed * 100) / 100;
+            const speedkmh = data.coords.speed === null ? null : data.coords.speed * 3.6;
+            document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
             const speedTrail = document.getElementById("speedTrail");
             const svgWidth = 1200;
             const svgHeight = 300;
