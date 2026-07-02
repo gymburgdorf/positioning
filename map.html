@@ -52,8 +52,8 @@
             function showData(data) {
                 const lon = data.coords.longitude 
                 const lat = data.coords.latitude
-                const posX = ((lon - minLon) / wLon) * 300
-                const posY = h - ((lat - minLat) / wLat) * h
+                const posX = ((lon - minLon) / wLon) * 300 - 4
+                const posY = h - ((lat - minLat) / wLat) * h + 1
 
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
