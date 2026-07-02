@@ -39,7 +39,7 @@
                 document.getElementById("speedkmh").textContent = Math.round(speedkmh * 100) / 100;
 
                 if (ws) {
-                    ws.sendToAll(data.coords.latitude + "," + data.coords.longitude);
+                    ws.sendToAll(JSON.stringify({ user: userName, lat: data.coords.latitude, lng: data.coords.longitude }));
                 }
             }
 
@@ -60,13 +60,19 @@
                 ws.onUserStatus(showUsers);
                 ws.getUsers();
             }
-            function renderData(data) {
-		        document.getElementById("wherefriend").textContent = JSON.stringify(data);
-	        }
+            function renderData(friendData) {
+                console.log(friendData);
+                let target = document.getElementById("wherefriend")
+                
+                target.insertAdjacentHTML('beforeEnd', `<div>${friendData.userName} - Lat: ${friendData.lat}, Lng: ${friendData.lng}</div>`);
+            }
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
+
             }
+
+
 
 
             registerLocationHandler(showData);
