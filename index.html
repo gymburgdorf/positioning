@@ -55,38 +55,38 @@
                 }
             }
 
-            let groupName = "provgroup";
-            groupInput.value = groupName
-	        groupInput.addEventListener("input", (event)=> {
-		        groupName = event.target.value
-	        })
-            let userName = "provuser";
-            userInput.value = userName
-            userInput.addEventListener("input", (event)=> {
-		        userName = event.target.value
-	        })
-            async function connect() {
-                ws = await WS.connect(groupName, userName);
-                app.classList.add("connected")
-                ws.onMessage(renderData);
-                ws.onUserStatus(showUsers);
-                ws.getUsers();
-            }
-            function renderData(friendData) {
-                console.log("string friendData:", friendData.data);
-                const fdataobject = JSON.parse(friendData.data);
-                console.log("object:", fdataobject);
-                const user = fdataobject.user;
-                const lat = fdataobject.lat;
-                const lng = fdataobject.lng;
-                let target = document.getElementById("wherefriend")
-                if (document.getElementById(user)) {
-                    document.getElementById(user).textContent = `${user} - Lat: ${lat}, Lng: ${lng}`;
-                } else {
-                    target.insertAdjacentHTML('beforeEnd', `<div id="${user}">${user} - Lat: ${lat}, Lng: ${lng}</div>`);
-                } 
-            }
-            connectButton.addEventListener("click", connect)
+            // let groupName = "provgroup";
+            // groupInput.value = groupName
+	        // groupInput.addEventListener("input", (event)=> {
+		    //     groupName = event.target.value
+	        // })
+            // let userName = "provuser";
+            // userInput.value = userName
+            // userInput.addEventListener("input", (event)=> {
+		    //     userName = event.target.value
+	        // })
+            // async function connect() {
+            //     ws = await WS.connect(groupName, userName);
+            //     app.classList.add("connected")
+            //     ws.onMessage(renderData);
+            //     ws.onUserStatus(showUsers);
+            //     ws.getUsers();
+            // }
+            // function renderData(friendData) {
+            //     console.log("string friendData:", friendData.data);
+            //     const fdataobject = JSON.parse(friendData.data);
+            //     console.log("object:", fdataobject);
+            //     const user = fdataobject.user;
+            //     const lat = fdataobject.lat;
+            //     const lng = fdataobject.lng;
+            //     let target = document.getElementById("wherefriend")
+            //     if (document.getElementById(user)) {
+            //         document.getElementById(user).textContent = `${user} - Lat: ${lat}, Lng: ${lng}`;
+            //     } else {
+            //         target.insertAdjacentHTML('beforeEnd', `<div id="${user}">${user} - Lat: ${lat}, Lng: ${lng}</div>`);
+            //     } 
+            // }
+            // connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
                 console.log("userlist:", window.parent.userlist);
@@ -97,7 +97,7 @@
                     let pos = window.parent.userPositions[user.username]
                     if(!pos) continue
                     console.log(pos)
-                    let d = getDistance(myY, myX, pos.lat, pos.lng)
+                    let d = Math.round(getDistance(myY, myX, pos.lat, pos.lng))
                     result.insertAdjacentHTML("beforeend", `<div>
                         ${user.username} - ${pos.lat} - ${pos.lng} - ${d} m
                         </div>`)

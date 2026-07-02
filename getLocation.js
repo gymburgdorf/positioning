@@ -30,7 +30,7 @@ export function getDistance(y1, x1, y2, x2) {
     let circumfrenceCircle = radiusCircle * (2 * Math.PI)
     let a = circumfrenceCircle / factorA
     let cSquare = Math.pow(a,2) + Math.pow(b,2)
-    let c = Math.sqrt(cSquare) * 1000 + " m"
+    let c = Math.sqrt(cSquare) * 1000
     console.log("a: " + a)
     console.log("b: " + b)
     return c
