@@ -83,10 +83,13 @@
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
+                console.log("userlist:", window.parent.userlist);
+                console.log("userpositions:", window.parent.userPositions);
+
 
             }
-
-
+            setInterval(showUsers, 1000);
+            
 
 
             registerLocationHandler(showData);

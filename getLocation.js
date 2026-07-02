@@ -35,4 +35,3 @@ export function getDisatnce(y1, x1,  y2, x2) {
     console.log("b: " + b)
     return c
 }
-console.log(getDisatnce(y1, x1, y2, x2))
