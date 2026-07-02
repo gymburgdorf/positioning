@@ -17,7 +17,7 @@ export function registerLocationHandler(fn) {
 
 }
 
-export function getDisatnce(y1, x1,  y2, x2) {
+export function getDistance(y1, x1, y2, x2) {
     let dx = x2 - x1
     let dy = y2 - y1
     let factorA = 360 / dx
