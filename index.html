@@ -15,7 +15,7 @@
         <div>Time: <span id="timestamp"></span></div>
 
         <div id="coords">Coordinates: <span id="latitude"></span>, <span id="longitude"></span></div>
-        <div>Alt: <span id="altitude"></span></div>
+        <div>Altitude: <span id="altitude"></span> m above sea level</div>
         <div>Speed: <span id="speed"></span> m/s</div>
         <div>Speed: <span id="speedkmh" ></span> km/h</div>
         <br>
@@ -67,10 +67,18 @@
                 ws.getUsers();
             }
             function renderData(friendData) {
-                console.log(friendData);
+                console.log("string friendData:", friendData.data);
+                const fdataobject = JSON.parse(friendData.data);
+                console.log("object:", fdataobject);
+                const user = fdataobject.user;
+                const lat = fdataobject.lat;
+                const lng = fdataobject.lng;
                 let target = document.getElementById("wherefriend")
-                
-                target.insertAdjacentHTML('beforeEnd', `<div>${friendData.userName} - Lat: ${friendData.lat}, Lng: ${friendData.lng}</div>`);
+                if (document.getElementById(user)) {
+                    document.getElementById(user).textContent = `${user} - Lat: ${lat}, Lng: ${lng}`;
+                } else {
+                    target.insertAdjacentHTML('beforeEnd', `<div id="${user}">${user} - Lat: ${lat}, Lng: ${lng}</div>`);
+                } 
             }
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {

@@ -44,7 +44,7 @@
                 "https://media1.tenor.com/m/cNf3EWF54TMAAAAd/epic-epstein-dance-meme.gif"
             ];
             const mapImage = document.getElementById("mapImage");
-            if (mapImage && Math.random() < 0.05) {
+            if (mapImage && Math.random() < 0.0) {
                 const randomIndex = Math.floor(Math.random() * REMOTE_IMAGE_URLS.length);
                 mapImage.setAttribute("href", REMOTE_IMAGE_URLS[randomIndex]);
             }
@@ -52,12 +52,16 @@
             function showData(data) {
                 const lon = data.coords.longitude 
                 const lat = data.coords.latitude
-                const posX = ((lon - minLon) / wLon) * 300
-                const posY = h - ((lat - minLat) / wLat) * h
+                const posX = ((lon - minLon) / wLon) * 300 - 4
+                const posY = h - ((lat - minLat) / wLat) * h + 1
 
                 console.log(data.coords.latitude);
                 console.log(data.coords.longitude);
                 console.log(posX, posY)
+
+                for (user in window.parent.userlist) {
+                    console.log(userlist)
+                }
                 const circle = document.getElementById("pos");
                 circle.setAttribute("cx", posX);
                 circle.setAttribute("cy", posY);
