@@ -17,6 +17,7 @@
         <div>Höhe: <span id="altitude"></span> m</div>
         <div>Geschwindigkeit: <span id="speed"></span> m/s</div>
         <div>Geschwindigkeit: <span id="speedkmh" ></span> km/h</div>
+        <div>Distanz zu Freund*in: <span id="distance"></span> m</div>
         <br>
 	    <input id="groupInput" placeholder="group">
 	    <input id="userInput" placeholder="user">
@@ -27,6 +28,7 @@
 
         <script type="module">
             import { registerLocationHandler, getDistance } from "./getLocation.js";
+            import { renderData } from "./connectWS.js";
             let ws = null;
 
             function showData(data) {
@@ -42,7 +44,13 @@
                 let hours = Math.floor(time)
                 let minutes = (time % 1)*60
                 document.getElementById("timestamp").textContent = hours + ":" + Math.floor(minutes);
-
+                let x1 = data.coords.lattitude
+                let y1 = data.coords.longitude
+                let x2 = renderData.lat
+                let y2 = renderData.lng
+                let distance = getDistance(y1, x1, y2, x2)
+                document.getElementById("distance").textContent = Math.round(distance * 100) / 100;
+                
                 if (ws) {
                     ws.sendToAll(JSON.stringify({ user: userName, lat: data.coords.latitude, lng: data.coords.longitude }));
                 }
@@ -83,12 +91,11 @@
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
                 console.log("userlist:", window.parent.userlist);
-                console.log("userpositions:", window.parent.userPositions);
+                console.log("userPositions:", window.parent.userPositions);
 
 
             }
             setInterval(showUsers, 1000);
-            
 
 
             registerLocationHandler(showData);
