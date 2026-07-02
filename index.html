@@ -15,7 +15,7 @@
         <div>Time: <span id="timestamp"></span></div>
 
         <div id="coords">Coordinates: <span id="latitude"></span>, <span id="longitude"></span></div>
-        <div>Altitude: <span id="altitude"></span> m above sea level</div>
+        <div>Altitude: <span id="altitude"></span> m</div>
         <div>Speed: <span id="speed"></span> m/s</div>
         <div>Speed: <span id="speedkmh" ></span> km/h</div>
         <br>
@@ -27,6 +27,7 @@
         <div id="wherefriend">Hier werden die Koordinaten der Freunde angezeigt</div>
 
         <script type="module">
+            import {getDistance} from "./getDistance.js";
             import { registerLocationHandler } from "./getLocation.js";
             let ws = null;
 
@@ -83,10 +84,13 @@
             connectButton.addEventListener("click", connect)
             function showUsers(userlist) {
                 document.getElementById("data").textContent = JSON.stringify(userlist);
+                console.log("userlist:", window.parent.userlist);
+                console.log("userpositions:", window.parent.userPositions);
+
 
             }
-
-
+            setInterval(showUsers, 1000);
+            
 
 
             registerLocationHandler(showData);
