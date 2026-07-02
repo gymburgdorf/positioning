@@ -17,10 +17,10 @@ export function registerLocationHandler(fn) {
 
 }
 
-//let x1 = 7.6
-//let x2 = 7.7
-//let y1 = 47
-//let y2 = 47.1
+let x1 = 7.6
+let x2 = 7.7
+let y1 = 47
+let y2 = 47.1
 
 export function getDisatnce(y1, x1,  y2, x2) {
     let dx = x2 - x1
@@ -29,12 +29,15 @@ export function getDisatnce(y1, x1,  y2, x2) {
     let factorB = 360 / dy 
     let b = 40008 / factorB
     let radiusEarth = 40075 / (2 * Math.PI)
-    let average = (x1 + x2)/2
-    let radiusCircle = Math.cos(average) * radiusEarth 
+    let average = (y1 + y2)/2 
+    let radOfAverage = average * (Math.PI / 180)
+    let radiusCircle = Math.cos(radOfAverage) * radiusEarth 
     let circumfrenceCircle = radiusCircle * (2 * Math.PI)
     let a = circumfrenceCircle / factorA
     let cSquare = Math.pow(a,2) + Math.pow(b,2)
-    let c = Math.sqrt(cSquare)
+    let c = Math.sqrt(cSquare) * 1000 + " m"
+    console.log("a: " + a)
+    console.log("b: " + b)
     return c
 }
 console.log(getDisatnce(y1, x1, y2, x2))
