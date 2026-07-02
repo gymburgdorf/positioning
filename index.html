@@ -17,19 +17,21 @@
         <div>Höhe: <span id="altitude"></span> m</div>
         <div>Geschwindigkeit: <span id="speed"></span> m/s</div>
         <div>Geschwindigkeit: <span id="speedkmh" ></span> km/h</div>
-        <div>Distanz zu Freund*in: <span id="distance"></span> m</div>
-        <br>
+        <!--br>
 	    <input id="groupInput" placeholder="group">
 	    <input id="userInput" placeholder="user">
         <button id="connectButton">Connect</button>
-        <br>
+        <br-->
         <div id="data"> Hier werden die Benutzenden angezeigt</div>
-        <div id="wherefriend">Hier werden die Koordinaten deiner Freund*innen angezeigt</div>
+        <div id="wherefriend"></div>
 
         <script type="module">
             import { registerLocationHandler, getDistance } from "./getLocation.js";
             //import { renderData } from "./connectWS.js";
             let ws = null;
+            let myX = null
+            let myY = null
+
 
             function showData(data) {
                 console.log(data);
@@ -44,12 +46,9 @@
                 let hours = Math.floor(time)
                 let minutes = (time % 1)*60
                 document.getElementById("timestamp").textContent = hours + ":" + Math.floor(minutes);
-                let x1 = data.coords.lattitude
-                let y1 = data.coords.longitude
-                let x2 = renderData.lat
-                let y2 = renderData.lng
-                let distance = getDistance(y1, x1, y2, x2)
-                document.getElementById("distance").textContent = Math.round(distance * 100) / 100;
+                myX = data.coords.longitude
+                myY = data.coords.latitude
+
                 
                 if (ws) {
                     ws.sendToAll(JSON.stringify({ user: userName, lat: data.coords.latitude, lng: data.coords.longitude }));
@@ -92,7 +91,21 @@
                 document.getElementById("data").textContent = JSON.stringify(userlist);
                 console.log("userlist:", window.parent.userlist);
                 console.log("userPositions:", window.parent.userPositions);
-
+                let result = document.getElementById("wherefriend")
+                result.innerHTML = ""
+                for(let user of window.parent.userlist) {
+                    let pos = window.parent.userPositions[user.username]
+                    if(!pos) continue
+                    console.log(pos)
+                    let d = getDistance(myY, myX, pos.lat, pos.lng)
+                    result.insertAdjacentHTML("beforeend", `<div>
+                        ${user.username} - ${pos.lat} - ${pos.lng} - ${d} m
+                        </div>`)
+                }
+                
+                // let x2 = renderData.lat
+                // let y2 = renderData.lng
+                // let distance = getDistance(myY, myX, y2, x2)
 
             }
             setInterval(showUsers, 1000);
